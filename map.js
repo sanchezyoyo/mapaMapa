@@ -26,11 +26,61 @@ function init() {
         loadTilesWhileAnimating: true,
         view:view
     });
+
+    console.log("we loaded this init function BAM");
 }
 
-// How do we know our web page loads for the first time?
-document.addEventListener("DOMContentLoaded", function (e){
-    console.log("LOADED LSKDMFLKSDMFLKSDMFLKM");
-    init();
-});
+// AFTER SHE STRUGGLED FOR 80 YEARS, Kanyce finally realized, 
+// Part of the DOM pattern (style of coding)
+// console.log == print for JS, which prints *gag
+// To CREATE the map, we RUN our init function
+// This runs when we first open up our website
 
+// document.addEventListener("DOMContentLoaded", function (e){
+//     console.log("LOADED LSKDMFLKSDMFLKSDMFLKM");
+//     init();
+// });
+
+window.onload = init;
+
+
+// Animates the map - zooms in (but we need to connect this to a button)
+function panHome() {
+    view.animate({
+        center: ourLoc,
+        duration: 2000
+    });
+}
+
+// Create a function that will go to a specific location
+// Using another API
+
+function panToLocation() {
+    var countryName = document.getElementById("country-name").value;
+
+    //Error check to make sure the country is spelled correctly
+    if(countryName === "") {
+        alert("You didn't enter a country name!");
+        return;
+    }
+    var lon = 0.0;
+    var lat = 0.0;
+    var location = ol.proj.fromLonLat([lon, lat]);
+    
+    //we're accessing a REST API to get the country's 
+    //location data
+    var query = "https://restcountries.eu/rest/v2/name/"+countryName;
+    query = query.replace(/ /g, "%20");
+    alert(query);
+
+    //we are now REQUESTING - talking to the server
+    var countryRequest = new XMLHttpRequest();
+    countryRequest.open('GET,' query, false);
+
+    //we
+
+    view.animate({
+        center: location,
+        duration: 2000
+    });
+    
